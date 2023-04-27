@@ -1,0 +1,23 @@
+Debug: true
+Mssql:
+    IP: 172.16.106.28
+    Port: 1433
+    Database: facecheck
+    Username: sa
+    Password: ad_12@23
+Mqtt:
+    Broker: 1.6.0.153
+    Port: 11886
+    ClientID: D1585145149p01HD
+    Username: 7E9C4101639E40CAB0BD207FF6DDB683
+    Password: HH0BL%sb|wNU?Ap@u[@Z9ufG
+In:
+    Index: 1200000
+    Start: "07:00:00"
+    End: "09:00:00"
+    Cron: '*/5 7-9 * * *'
+Out:
+    Index: 1200000
+    Start: "17:00:00"
+    End: "19:00:00"
+    Cron: '*/5 17-19 * * *'
