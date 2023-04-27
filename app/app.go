@@ -14,10 +14,10 @@ var appMssql *gorm.DB
 var appSqlite *gorm.DB
 var settings *settingsStruct
 
-func Run() {
+func Run(isDebug bool) {
 
 	// 日志服务
-	LogService()
+	LogService(isDebug)
 	// 设置读取
 	SettingsService()
 	// mssql服务

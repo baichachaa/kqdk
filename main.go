@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 func chdir() {
@@ -22,10 +23,12 @@ func chdir() {
 var debug string
 
 func main() {
-	if debug != "true" {
+
+	isDebug, _ := strconv.ParseBool(debug)
+
+	if isDebug != true {
 		chdir()
 	}
-	app.Run()
-
+	app.Run(isDebug)
 	app.SystemService()
 }

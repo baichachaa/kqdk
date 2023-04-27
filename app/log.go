@@ -1,13 +1,14 @@
 package app
 
 import (
+	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 )
 
-func LogService() {
+func LogService(isDebug bool) {
 	hook := lumberjack.Logger{
 		Filename:   "./logs/app.log",
 		MaxSize:    10,  // 每个日志文件保存的最大尺寸 单位：M
@@ -20,15 +21,22 @@ func LogService() {
 	config.EncodeTime = zapcore.TimeEncoderOfLayout("2006-01-02 15:04:05")
 	encoder := zapcore.NewJSONEncoder(config)
 
-	multiWriteSyncer := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook))
+	var multiWriteSyncer zapcore.WriteSyncer
+
+	if isDebug == true {
+		multiWriteSyncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook))
+	} else {
+		multiWriteSyncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(&hook))
+	}
 
 	core := zapcore.NewCore(encoder, multiWriteSyncer, zap.DebugLevel)
 	appLogger = zap.New(core)
 
-	//err := appLogger.Sync()
-	//if err != nil {
-	//	fmt.Println("日志打开失败")
-	//	panic(err)
-	//}
-
+	if isDebug == false {
+		err := appLogger.Sync()
+		if err != nil {
+			fmt.Println("日志打开失败")
+			panic(err)
+		}
+	}
 }
