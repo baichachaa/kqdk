@@ -1,0 +1,7 @@
+/.idea
+/logs/
+/dist
+
+go.sum
+.gitignore
+
