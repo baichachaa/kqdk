@@ -12,7 +12,6 @@ require (
 	golang.org/x/text v0.7.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
-	gorm.io/driver/mysql v1.5.0
 	gorm.io/driver/sqlite v1.5.0
 	gorm.io/driver/sqlserver v1.4.3
 	gorm.io/gorm v1.25.0
@@ -21,7 +20,6 @@ require (
 
 require (
 	github.com/andybalholm/cascadia v1.3.1 // indirect
-	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect

@@ -26,9 +26,10 @@ func main() {
 
 	isDebug, _ := strconv.ParseBool(debug)
 
+	// 修改运行目录
 	if isDebug != true {
 		chdir()
 	}
+
 	app.Run(isDebug)
-	app.SystemService()
 }

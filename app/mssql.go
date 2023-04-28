@@ -51,6 +51,19 @@ func MssqlService() *gorm.DB {
 	dsn = fmt.Sprintf(dsn, settings.Mssql.Username, settings.Mssql.Password, settings.Mssql.IP, settings.Mssql.Port, settings.Mssql.Database)
 	tdb, err := gorm.Open(sqlserver.Open(dsn), &gormConfig)
 	if err != nil {
+		fmt.Println("mssql 连接失败")
+		fmt.Println(err.Error())
+		appLogger.Error("mssql 连接失败")
+		appLogger.Error(err.Error())
+		panic(err)
+	}
+
+	// 检查数据库连接情况
+	rs := Record{}
+	err = tdb.Select("top 1 Record_ID").Find(&rs).Error
+	if err != nil {
+		fmt.Println("mssql 连接失败")
+		fmt.Println(err.Error())
 		appLogger.Error("mssql 连接失败")
 		appLogger.Error(err.Error())
 		panic(err)

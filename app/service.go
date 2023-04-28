@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/kardianos/service"
 	"os"
 )
@@ -8,34 +9,38 @@ import (
 type Program struct{}
 
 func (p *Program) Start(s service.Service) error {
+	fmt.Println("开始服务")
 	appLogger.Info("开始服务")
 	appCron.Start()
 	return nil
 }
 
 func (p *Program) Stop(s service.Service) error {
+	fmt.Println("停止服务")
 	appLogger.Info("停止服务")
 	_ = appLogger.Sync()
 	appCron.Stop()
 	return nil
 }
 
-func SystemService() {
-
+func InitService() {
 	var serviceConfig = &service.Config{
-		Name:        "HyS6000",
-		DisplayName: "HyS6000",
-		Description: "S6000自动反馈，拒绝超期\nv230425.3",
+		Name:        "zhrz-kqdk",
+		DisplayName: "智慧人资-考勤打卡",
+		Description: "门禁考勤数据自动推送至智慧人资\nv230428.3",
 	}
 
 	prg := &Program{}
 	s, err := service.New(prg, serviceConfig)
+	appServ = s
+
 	if err != nil {
+		fmt.Println(err.Error())
 		appLogger.Error(err.Error())
 		return
 	}
-
 	if err != nil {
+		fmt.Println(err.Error())
 		appLogger.Error(err.Error())
 		return
 	}
@@ -44,26 +49,36 @@ func SystemService() {
 		if os.Args[1] == "install" {
 			err := s.Install()
 			if err != nil {
-				appLogger.Error("请以管理员权限运行")
-				return
+				fmt.Println(err.Error())
+				appLogger.Error(err.Error())
+				os.Exit(0)
 			}
+			fmt.Println("服务安装成功")
 			appLogger.Info("服务安装成功")
-			return
+			os.Exit(0)
 		}
 
 		if os.Args[1] == "remove" {
 			err := s.Uninstall()
 			if err != nil {
-				appLogger.Error("请以管理员权限运行")
-				return
+				fmt.Println(err.Error())
+				appLogger.Error(err.Error())
+				os.Exit(0)
 			}
+			fmt.Println("服务卸载成功")
 			appLogger.Info("服务卸载成功")
-			return
+			os.Exit(0)
 		}
 	}
 
-	err = s.Run()
+}
+
+func ServiceRun() {
+
+	err := appServ.Run()
 	if err != nil {
+		fmt.Println("系统服务启动异常")
+		fmt.Println(err.Error())
 		appLogger.Error(err.Error())
 		_ = appLogger.Sync()
 	}
