@@ -107,10 +107,10 @@ func getIotMessage(inOrOutData []Record) []byte {
 		iotData[k].Data.UserName = inOrOutData[k].Name
 		iotData[k].Data.Department = inOrOutData[k].DepartMentName
 		iotData[k].Data.UserId = inOrOutData[k].IdentityNo
-		iotData[k].Data.DeviceSn = "0010F27557B3"
+		iotData[k].Data.DeviceSn = settings.Devices.Sn
 
 		iotData[k].EventTime = eventTime
-		iotData[k].ServiceId = "message"
+		iotData[k].ServiceId = settings.Devices.Message
 
 		// 出入替换 0->2 1->1
 		if inOrOutData[k].DeviceInout == 0 {

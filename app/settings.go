@@ -34,6 +34,10 @@ type settingsStruct struct {
 		End   string `yaml:"End"`
 		Cron  string `yaml:"Cron"`
 	} `yaml:"Out"`
+	Devices struct {
+		Sn      string `yaml:"Sn"`
+		Message string `yaml:"Message"`
+	} `yaml:"Devices"`
 }
 
 func SettingsService() {

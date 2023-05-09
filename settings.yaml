@@ -21,3 +21,6 @@ Out:
     Start: "16:30:00"
     End: "21:00:00"
     Cron: '*/3 16-21 * * *'
+Devices:
+    Sn: sn
+    Message: message
