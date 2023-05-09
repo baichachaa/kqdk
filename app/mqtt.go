@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"os"
 	"time"
 )
 
@@ -39,7 +40,8 @@ func MqttInit() {
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		appLogger.Error("MQTT 首次连接失败")
 		_ = appLogger.Sync()
-		panic(token.Error())
+		fmt.Println(token.Error())
+		os.Exit(0)
 	}
 
 	appClient = client

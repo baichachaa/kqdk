@@ -1,6 +1,7 @@
 package app
 
 import (
+	"flag"
 	"fmt"
 	"github.com/kardianos/service"
 	"os"
@@ -24,10 +25,15 @@ func (p *Program) Stop(s service.Service) error {
 }
 
 func InitService() {
+
+	isInstall := flag.Bool("i", false, "system service install")
+	isUnInstall := flag.Bool("u", false, "system service uninstall")
+	flag.Parse()
+
 	var serviceConfig = &service.Config{
 		Name:        "zhrz-kqdk",
 		DisplayName: "智慧人资-考勤打卡",
-		Description: "门禁考勤数据自动推送至智慧人资\nv230428.3",
+		Description: "门禁考勤数据自动推送至智慧人资\nv23509.3",
 	}
 
 	prg := &Program{}
@@ -45,32 +51,29 @@ func InitService() {
 		return
 	}
 
-	if len(os.Args) > 1 {
-		if os.Args[1] == "install" {
-			err := s.Install()
-			if err != nil {
-				fmt.Println(err.Error())
-				appLogger.Error(err.Error())
-				os.Exit(0)
-			}
-			fmt.Println("服务安装成功")
-			appLogger.Info("服务安装成功")
+	if *isInstall == true {
+		err := s.Install()
+		if err != nil {
+			fmt.Println(err.Error())
+			appLogger.Error(err.Error())
 			os.Exit(0)
 		}
-
-		if os.Args[1] == "remove" {
-			err := s.Uninstall()
-			if err != nil {
-				fmt.Println(err.Error())
-				appLogger.Error(err.Error())
-				os.Exit(0)
-			}
-			fmt.Println("服务卸载成功")
-			appLogger.Info("服务卸载成功")
-			os.Exit(0)
-		}
+		fmt.Println("system service install success")
+		appLogger.Info("system service install success")
+		os.Exit(0)
 	}
 
+	if *isUnInstall == true {
+		err := s.Uninstall()
+		if err != nil {
+			fmt.Println(err.Error())
+			appLogger.Error(err.Error())
+			os.Exit(0)
+		}
+		fmt.Println("system service uninstall success")
+		appLogger.Info("system service uninstall success")
+		os.Exit(0)
+	}
 }
 
 func ServiceRun() {

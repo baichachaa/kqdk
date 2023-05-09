@@ -36,7 +36,8 @@ func LogService(isDebug bool) {
 		err := appLogger.Sync()
 		if err != nil {
 			fmt.Println("日志打开失败")
-			panic(err)
+			fmt.Println(err)
+			os.Exit(0)
 		}
 	}
 }

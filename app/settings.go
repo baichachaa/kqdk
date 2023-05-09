@@ -44,12 +44,14 @@ func SettingsService() {
 	config, err := os.ReadFile("settings.yaml")
 	if err != nil {
 		appLogger.Error(err.Error())
-		panic(err)
+		fmt.Println(err)
+		os.Exit(0)
 	}
+	settings = &settingsStruct{}
 	err = yaml.Unmarshal(config, &settings)
 	if err != nil {
-		appLogger.Error(err.Error())
-		panic(err)
+		fmt.Println(err)
+		os.Exit(0)
 	}
 	appLogger.Info(fmt.Sprintf("%+v\n", settings))
 	//fmt.Println(string(utils.StructToJsonByte(settings)))
