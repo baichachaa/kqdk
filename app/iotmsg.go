@@ -102,15 +102,15 @@ func getDataModel(inOrOut int, index int, start string, end string) []Record {
 func getIotMessage(inOrOutData []Record) []byte {
 	iotData := make([]iotService, len(inOrOutData))
 	eventTime := time.Now().Format("20060102T150405Z")
-	for k, _ := range iotData {
+	for k := range iotData {
 		iotData[k].Data.PassTime = strconv.FormatInt(inOrOutData[k].AuthTime.UnixMilli(), 10)[:13]
 		iotData[k].Data.UserName = inOrOutData[k].Name
 		iotData[k].Data.Department = inOrOutData[k].DepartMentName
 		iotData[k].Data.UserId = inOrOutData[k].IdentityNo
-		iotData[k].Data.DeviceSn = settings.Devices.Sn
+		iotData[k].Data.DeviceSn = settings.Devices.DevicesSn
 
 		iotData[k].EventTime = eventTime
-		iotData[k].ServiceId = settings.Devices.Message
+		iotData[k].ServiceId = settings.Devices.ServiceId
 
 		// 出入替换 0->2 1->1
 		if inOrOutData[k].DeviceInout == 0 {

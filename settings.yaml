@@ -22,5 +22,5 @@ Out:
     End: "21:00:00"
     Cron: '*/3 16-21 * * *'
 Devices:
-    Sn: sn
-    Message: message
+    DevicesSn: xt01
+    ServiceId: AttandenceRecord

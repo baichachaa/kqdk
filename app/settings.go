@@ -35,8 +35,8 @@ type settingsStruct struct {
 		Cron  string `yaml:"Cron"`
 	} `yaml:"Out"`
 	Devices struct {
-		Sn      string `yaml:"Sn"`
-		Message string `yaml:"Message"`
+		DevicesSn string `yaml:"DevicesSn"`
+		ServiceId string `yaml:"ServiceId"`
 	} `yaml:"Devices"`
 }
 

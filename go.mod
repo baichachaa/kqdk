@@ -12,7 +12,6 @@ require (
 	golang.org/x/text v0.7.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
-	gorm.io/driver/sqlite v1.5.0
 	gorm.io/driver/sqlserver v1.4.3
 	gorm.io/gorm v1.25.0
 	moul.io/zapgorm2 v1.3.0
@@ -25,7 +24,6 @@ require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/microsoft/go-mssqldb v0.21.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
