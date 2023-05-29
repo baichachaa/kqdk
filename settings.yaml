@@ -15,12 +15,12 @@ In:
     Index: 1200000
     Start: "06:00:00"
     End: "09:30:00"
-    Cron: '*/3 6-9 * * *'
+    Cron: '*/1 6-9 * * *'
 Out:
     Index: 1200000
     Start: "16:30:00"
     End: "21:00:00"
-    Cron: '*/3 16-21 * * *'
+    Cron: '*/1 16-21 * * *'
 Devices:
     DevicesSn: xt01
     ServiceId: AttandenceRecord

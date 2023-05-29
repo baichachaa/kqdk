@@ -24,16 +24,36 @@ func (p *Program) Stop(s service.Service) error {
 	return nil
 }
 
+var (
+	// 初始化为 unknown，如果编译时没有传入这些值，则为 unknown
+	Revision  = "unknown"
+	Branch    = "unknown"
+	BuildDate = "unknown"
+	BuildTag  = "调度大楼"
+)
+
 func InitService() {
 
 	isInstall := flag.Bool("i", false, "system service install")
 	isUnInstall := flag.Bool("u", false, "system service uninstall")
+	isVersion := flag.Bool("v", false, "show bin version")
+
 	flag.Parse()
+
+	if *isVersion {
+		fmt.Printf("  Revision:         %s\n", Revision)
+		fmt.Printf("  Branch:           %s\n", Branch)
+		fmt.Printf("  BuildDate:        %s\n", BuildDate)
+		fmt.Printf("  BuildTag:         %s\n", BuildTag)
+		fmt.Printf("  ServName:         %s\n", "HrCheckIn")
+		fmt.Printf("  ServDisplayName:  %s\n", "智慧人资考勤打卡")
+		os.Exit(0)
+	}
 
 	var serviceConfig = &service.Config{
 		Name:        "zhrz-kqdk",
 		DisplayName: "智慧人资-考勤打卡",
-		Description: "门禁考勤数据自动推送至智慧人资\nv23509.3",
+		Description: "门禁考勤数据自动推送至智慧人资\n" + BuildDate,
 	}
 
 	prg := &Program{}
