@@ -50,7 +50,7 @@ func MqttInit() {
 func publish(client mqtt.Client, text []byte) {
 
 	//text := fmt.Sprintf("Message %d", i)
-	token := client.Publish("/v1/devices/SNs-HT-XT-BenBuDaLou-RLSB/datas", 2, false, text)
+	token := client.Publish("/v1/devices/SNs-HT-XT-BenBuDaLou-RLSB/datas", settings.Mqtt.Qos, false, text)
 
 	// token是阻塞，需要启动多线程
 	go func() {

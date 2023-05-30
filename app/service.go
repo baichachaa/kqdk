@@ -26,6 +26,7 @@ func (p *Program) Stop(s service.Service) error {
 
 var (
 	// 初始化为 unknown，如果编译时没有传入这些值，则为 unknown
+	Version   = "unknown"
 	Revision  = "unknown"
 	Branch    = "unknown"
 	BuildDate = "unknown"
@@ -41,6 +42,7 @@ func InitService() {
 	flag.Parse()
 
 	if *isVersion {
+		fmt.Printf("  Version:          %s\n", Version)
 		fmt.Printf("  Revision:         %s\n", Revision)
 		fmt.Printf("  Branch:           %s\n", Branch)
 		fmt.Printf("  BuildDate:        %s\n", BuildDate)
@@ -53,7 +55,7 @@ func InitService() {
 	var serviceConfig = &service.Config{
 		Name:        "zhrz-kqdk",
 		DisplayName: "智慧人资-考勤打卡",
-		Description: "门禁考勤数据自动推送至智慧人资\n" + BuildDate,
+		Description: "门禁考勤数据自动推送至智慧人资\n" + Version + "\n" + BuildDate,
 	}
 
 	prg := &Program{}

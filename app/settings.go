@@ -21,6 +21,7 @@ type settingsStruct struct {
 		ClientID string `yaml:"ClientID"`
 		Username string `yaml:"Username"`
 		Password string `yaml:"Password"`
+		Qos      byte   `yaml:"Qos"`
 	} `yaml:"Mqtt"`
 	In struct {
 		Index int    `yaml:"Index"`

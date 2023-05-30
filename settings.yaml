@@ -1,4 +1,4 @@
-Debug: true
+Debug: false
 Mssql:
     IP: 172.16.106.28
     Port: 1433
@@ -11,6 +11,7 @@ Mqtt:
     ClientID: D1585145149p01HD
     Username: 7E9C4101639E40CAB0BD207FF6DDB683
     Password: HH0BL%sb|wNU?Ap@u[@Z9ufG
+    Qos: 1
 In:
     Index: 1200000
     Start: "06:00:00"
@@ -20,7 +21,7 @@ Out:
     Index: 1200000
     Start: "16:30:00"
     End: "21:00:00"
-    Cron: '*/1 16-21 * * *'
+    Cron: '*/1 16-20 * * *'
 Devices:
     DevicesSn: xt01
     ServiceId: AttandenceRecord
