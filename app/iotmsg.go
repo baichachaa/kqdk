@@ -24,12 +24,14 @@ func getInData(isIn bool) {
 		}
 	}()
 
+	directionStr := "入"
 	direction := 1             // in
 	index := settings.In.Index // in
 	start := settings.In.Start // in
 	end := settings.In.End     // in
 
 	if isIn == false {
+		directionStr = "出"
 		direction = 0              // out
 		index = settings.Out.Index // out
 		start = settings.Out.Start // out
@@ -38,11 +40,7 @@ func getInData(isIn bool) {
 
 	dbList := getDataModel(direction, index, start, end)
 
-	if isIn {
-		appLogger.Info(fmt.Sprintf("方向：入，时间段：%s-%s，起始索引：%d，数量：%d", start, end, index, len(dbList)))
-	} else {
-		appLogger.Info(fmt.Sprintf("方向：出，时间段：%s-%s，起始索引：%d，数量：%d", start, end, index, len(dbList)))
-	}
+	appLogger.Info(fmt.Sprintf("方向：%s，时间段：%s-%s，起始索引：%d，数量：%d", directionStr, start, end, index, len(dbList)))
 
 	// 存在数据的时候才提交数据
 	if len(dbList) > 0 {
@@ -51,25 +49,29 @@ func getInData(isIn bool) {
 
 		iotMessage := getIotMessage(dbList)
 
-		token := appClient.Publish("/v1/devices/SNs-HT-XT-BenBuDaLou-RLSB/datas", 2, false, iotMessage)
+		token := appClient.Publish("/v1/devices/SN-HT-XT-BenBuDaLou-RLSB/datas", settings.Mqtt.Qos, false, iotMessage)
 
-		// token是阻塞，需要启动多线程
-		appLogger.Info(fmt.Sprintf("正在推送数据，终止索引：%d，数量：%d,", dbLast.RecordId, len(dbList)))
+		appLogger.Info(fmt.Sprintf("正在推送数据，方向：%s,终止索引：%d，数量：%d", directionStr, dbLast.RecordId, len(dbList)))
 		isDone := token.WaitTimeout(30 * time.Second) // Can also use '<-t.Done()' in releases > 1.2.0
-		if token.Error() != nil {
-			appLogger.Error("推送失败")
-			appLogger.Error(token.Error().Error()) // Use your preferred logging technique (or just fmt.Printf)
-		} else {
-			appLogger.Info("推送成功")
-		}
 
-		if isDone == true {
+		if isDone == false {
+
+			appLogger.Error(fmt.Sprintf("方向：%s,推送失败", directionStr))
+			if token.Error() != nil {
+				appLogger.Error(token.Error().Error()) // Use your preferred logging technique (or just fmt.Printf)
+			}
+
+		} else {
+
+			appLogger.Info(fmt.Sprintf("方向：%s,推送成功", directionStr))
+
 			if isIn == true {
 				settings.In.Index = dbLast.RecordId
 			} else {
 				settings.Out.Index = dbLast.RecordId
 			}
 			saveSettings()
+
 		}
 	}
 
@@ -122,8 +124,8 @@ func getIotMessage(inOrOutData []Record) []byte {
 
 	devices := make([]iotDeviceUpdate, 1)
 	devices[0] = iotDeviceUpdate{
-		DevicesId: settings.Mqtt.ClientID,
-		Services:  iotData,
+		DeviceId: settings.Mqtt.ClientID,
+		Services: iotData,
 	}
 	iot := iotDevices{
 		Devices: devices,

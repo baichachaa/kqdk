@@ -26,11 +26,13 @@ func (p *Program) Stop(s service.Service) error {
 
 var (
 	// 初始化为 unknown，如果编译时没有传入这些值，则为 unknown
-	Version   = "unknown"
-	Revision  = "unknown"
-	Branch    = "unknown"
-	BuildDate = "unknown"
-	BuildTag  = "调度大楼"
+	Version         = "unknown"
+	Revision        = "unknown"
+	Branch          = "unknown"
+	BuildDate       = "unknown"
+	BuildTag        = "调度大楼"
+	ServName        = "HrCheckIn"
+	ServDisplayName = "智慧人资考勤打卡"
 )
 
 func InitService() {
@@ -47,14 +49,14 @@ func InitService() {
 		fmt.Printf("  Branch:           %s\n", Branch)
 		fmt.Printf("  BuildDate:        %s\n", BuildDate)
 		fmt.Printf("  BuildTag:         %s\n", BuildTag)
-		fmt.Printf("  ServName:         %s\n", "HrCheckIn")
-		fmt.Printf("  ServDisplayName:  %s\n", "智慧人资考勤打卡")
+		fmt.Printf("  ServName:         %s\n", ServName)
+		fmt.Printf("  ServDisplayName:  %s\n", ServDisplayName)
 		os.Exit(0)
 	}
 
 	var serviceConfig = &service.Config{
-		Name:        "zhrz-kqdk",
-		DisplayName: "智慧人资-考勤打卡",
+		Name:        ServName,
+		DisplayName: ServDisplayName,
 		Description: "门禁考勤数据自动推送至智慧人资\n" + Version + "\n" + BuildDate,
 	}
 

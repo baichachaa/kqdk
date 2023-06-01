@@ -20,8 +20,8 @@ type iotService struct {
 }
 
 type iotDeviceUpdate struct {
-	DevicesId string       `json:"devicesId"` // clientId
-	Services  []iotService `json:"services"`
+	DeviceId string       `json:"deviceId"` // clientId
+	Services []iotService `json:"services"`
 }
 
 type iotDevices struct {

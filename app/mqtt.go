@@ -4,7 +4,6 @@ import (
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"os"
-	"time"
 )
 
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
@@ -45,19 +44,4 @@ func MqttInit() {
 	}
 
 	appClient = client
-}
-
-func publish(client mqtt.Client, text []byte) {
-
-	//text := fmt.Sprintf("Message %d", i)
-	token := client.Publish("/v1/devices/SNs-HT-XT-BenBuDaLou-RLSB/datas", settings.Mqtt.Qos, false, text)
-
-	// token是阻塞，需要启动多线程
-	go func() {
-		_ = token.WaitTimeout(30 * time.Second) // Can also use '<-t.Done()' in releases > 1.2.0
-		if token.Error() != nil {
-			appLogger.Error(token.Error().Error()) // Use your preferred logging technique (or just fmt.Printf)
-		}
-	}()
-
 }
