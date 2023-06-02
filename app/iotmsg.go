@@ -105,7 +105,7 @@ func getIotMessage(inOrOutData []Record) []byte {
 	iotData := make([]iotService, len(inOrOutData))
 	eventTime := time.Now().Format("20060102T150405Z")
 	for k := range iotData {
-		iotData[k].Data.PassTime = strconv.FormatInt(inOrOutData[k].AuthTime.UnixMilli(), 10)[:13]
+		iotData[k].Data.PassTime = strconv.FormatInt(inOrOutData[k].AuthTime.Add(-8*time.Hour).UnixMilli(), 10)[:13]
 		iotData[k].Data.UserName = inOrOutData[k].Name
 		iotData[k].Data.Department = inOrOutData[k].DepartMentName
 		iotData[k].Data.UserId = inOrOutData[k].IdentityNo

@@ -2,7 +2,7 @@ Revision=$(git rev-parse HEAD)
 Branch=$(git rev-parse --abbrev-ref HEAD)
 BuildDate=$(date +'%Y-%m-%d %H:%M:%d')
 
-Version=1.0.2
+Version=1.0.3
 
 echo $Revision
 echo $Branch

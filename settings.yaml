@@ -1,4 +1,4 @@
-Debug: false
+Debug: true
 Mssql:
     IP: 172.16.106.28
     Port: 1433
@@ -13,7 +13,7 @@ Mqtt:
     Password: HH0BL%sb|wNU?Ap@u[@Z9ufG
     Qos: 1
 In:
-    Index: 1200000
+    Index: 1201743
     Start: "06:00:00"
     End: "09:30:00"
     Cron: '*/1 6-9 * * *'
