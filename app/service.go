@@ -40,6 +40,7 @@ func InitService() {
 	isInstall := flag.Bool("i", false, "system service install")
 	isUnInstall := flag.Bool("u", false, "system service uninstall")
 	isVersion := flag.Bool("v", false, "show bin version")
+	isTest = flag.Bool("t", false, "connect test")
 
 	flag.Parse()
 

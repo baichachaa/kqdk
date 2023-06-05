@@ -61,13 +61,16 @@ func MssqlService() *gorm.DB {
 	dsn := "sqlserver://%s:%s@%s:%d?database=%s&encrypt=disable"
 	dsn = fmt.Sprintf(dsn, settings.Mssql.Username, settings.Mssql.Password, settings.Mssql.IP, settings.Mssql.Port, settings.Mssql.Database)
 	tdb, err := gorm.Open(sqlserver.Open(dsn), &gormConfig)
+
 	if err != nil {
 		fmt.Println("mssql 连接失败")
 		fmt.Println(err.Error())
 		appLogger.Error("mssql 连接失败")
 		appLogger.Error(err.Error())
 		fmt.Println(err)
-		os.Exit(0)
+		if *isTest {
+			os.Exit(0)
+		}
 	}
 
 	// 检查数据库连接情况
@@ -79,7 +82,9 @@ func MssqlService() *gorm.DB {
 		appLogger.Error("mssql 连接失败")
 		appLogger.Error(err.Error())
 		fmt.Println(err)
-		os.Exit(0)
+		if *isTest {
+			os.Exit(0)
+		}
 	}
 
 	appMssql = tdb

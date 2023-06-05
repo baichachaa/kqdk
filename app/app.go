@@ -15,6 +15,7 @@ var appLogger *zap.Logger
 var appMssql *gorm.DB
 var appSqlite *gorm.DB
 var settings *settingsStruct
+var isTest *bool
 
 func Run(isDebug bool) {
 

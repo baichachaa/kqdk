@@ -36,12 +36,28 @@ func MqttInit() {
 
 	client := mqtt.NewClient(opts)
 
-	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		appLogger.Error("MQTT 首次连接失败")
-		_ = appLogger.Sync()
-		fmt.Println(token.Error())
-		os.Exit(0)
+	if *isTest {
+		mqttInitConnect(client)
+	} else {
+		go mqttInitConnect(client)
 	}
 
 	appClient = client
+}
+
+func mqttInitConnect(client mqtt.Client) {
+	token := client.Connect()
+	if token.Wait() && token.Error() != nil {
+		if *isTest {
+			appLogger.Error("MQTT 登录失败")
+			_ = appLogger.Sync()
+			fmt.Println(token.Error())
+			os.Exit(0)
+		} else {
+			appLogger.Error("MQTT 登录失败，正在重试")
+			mqttInitConnect(client)
+		}
+	} else {
+		appLogger.Info("MQTT 登录成功")
+	}
 }
