@@ -54,14 +54,7 @@ func getInData(isIn bool) {
 		appLogger.Info(fmt.Sprintf("正在推送数据，方向：%s,终止索引：%d，数量：%d", directionStr, dbLast.RecordId, len(dbList)))
 		isDone := token.WaitTimeout(30 * time.Second) // Can also use '<-t.Done()' in releases > 1.2.0
 
-		if isDone == false {
-
-			appLogger.Error(fmt.Sprintf("方向：%s,推送失败", directionStr))
-			if token.Error() != nil {
-				appLogger.Error(token.Error().Error()) // Use your preferred logging technique (or just fmt.Printf)
-			}
-
-		} else {
+		if isDone == true && appClient.IsConnectionOpen() == true {
 
 			appLogger.Info(fmt.Sprintf("方向：%s,推送成功", directionStr))
 
@@ -71,6 +64,10 @@ func getInData(isIn bool) {
 				settings.Out.Index = dbLast.RecordId
 			}
 			saveSettings()
+
+		} else {
+
+			appLogger.Error(fmt.Sprintf("方向：%s,推送失败", directionStr))
 
 		}
 	}
