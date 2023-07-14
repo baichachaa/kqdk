@@ -79,21 +79,18 @@ func getInData(isIn bool) {
 // start,end: 00:00:00 时间段的起止
 func getDataModel(inOrOut int, index int, start string, end string) []Record {
 	rs := []Record{}
-	//sqlite
-	//appSqlite.
-	//	Where("LENGTH(IdentityNo)=8").
-	//	Where("Record_ID > ?", index).
-	//	Where("Device_InOut = ?", inOrOut).
-	//	Where("strftime('%H:%M:%S',AuthTime) BETWEEN ? and ?", start, end).
-	//	Order("Record_ID DESC").
-	//	Find(&rs)
-	//sql server
-	appMssql.
-		Where("DATALENGTH(IdentityNo)=8").
-		Where("Record_ID > ?", index).
-		Where("Device_InOut = ?", inOrOut).
-		Where("CONVERT(char(8), AuthTime, 108) BETWEEN ? and ?", start, end).
-		Order("Record_ID DESC").Find(&rs)
+	appMysql.Table("aitcp_snapshot_t AS shot").
+		Select(`
+		shot.device_name,
+		shot.snap_time,
+		emp.employee_name,
+		emp.department_name,
+		emp.card_no`).
+		Joins("LEFT JOIN aitcp_employee_t AS emp ON shot.matched_person_id = emp.employee_code").
+		Where("shot.matched_person_id IS NOT NULL").
+		Where("LENGTH( card_no ) = 8 ").
+		Where("shot.snap_time BETWEEN '2023-07-10 00:00:00' AND '2023-07-11 00:00:00'").
+		Scan(&rs)
 	return rs
 }
 
@@ -112,7 +109,7 @@ func getIotMessage(inOrOutData []Record) []byte {
 		iotData[k].ServiceId = settings.Devices.ServiceId
 
 		// 出入替换 0->2 1->1
-		if inOrOutData[k].DeviceInout == 0 {
+		if inOrOutData[k].DeviceInout == "0" {
 			iotData[k].Data.Type = "2"
 		} else {
 			iotData[k].Data.Type = "1"

@@ -17,9 +17,8 @@ type Record struct {
 	Name           string    `gorm:"column:employee_name;type:varchar(50)"`    // 姓名--
 	IdentityNo     string    `gorm:"column:card_no;type:varchar(50)"`          // 人资编码 身份证号码格式的去除--
 	DepartMentName string    `gorm:"column:department_name;type:varchar(200)"` // -- 部门名称--
-	DeviceInout    int       `gorm:"column:Device_InOut;type:int"`             // 出入标识 1 入0 出--
-	DeviceLocation string    `gorm:"column:Device_Location;type:varchar(100)"` // 出入位置--
-	AuthTime       time.Time `gorm:"column:AuthTime;type:datetime"`            // 出入时间--
+	DeviceInout    string    `gorm:"column:device_name;type:varchar(200)"`     // 出入标识 1 入0 出--
+	AuthTime       time.Time `gorm:"column:snap_time;type:datetime"`           // 出入时间--
 }
 
 // NewService returns a new (SQL) base service for common operations.
@@ -86,6 +85,6 @@ func MssqlService() *gorm.DB {
 		}
 	}
 
-	appMssql = tdb
+	appMysql = tdb
 	return tdb
 }

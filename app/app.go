@@ -12,7 +12,7 @@ var appServ service.Service // interface
 var appCron *cron.Cron
 var appClient mqtt.Client //interface
 var appLogger *zap.Logger
-var appMssql *gorm.DB
+var appMysql *gorm.DB
 var appSqlite *gorm.DB
 var settings *settingsStruct
 var isTest *bool
@@ -29,8 +29,8 @@ func Run(isDebug bool) {
 	MssqlService()
 	// sqlite
 	//SqliteService()
-	//appMssql = appSqlite
-	//getInData(true)
+	//appMysql = appSqlite
+	getInData(true)
 	// 定时任务
 	CreateCronJob()
 	// mqtt 服务
