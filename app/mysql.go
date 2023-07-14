@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"gorm.io/driver/sqlserver"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	ormlogger "gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
@@ -14,10 +14,9 @@ import (
 
 type Record struct {
 	RecordId       int       `gorm:"column:Record_ID;primaryKey"`              // 记录号
-	Name           string    `gorm:"column:name;type:varchar(50)"`             // 姓名--
-	Sex            string    `gorm:"column:Sex;type:varchar(10)"`              // 性别--
-	IdentityNo     string    `gorm:"column:IdentityNo;type:varchar(50)"`       // 人资编码 身份证号码格式的去除--
-	DepartMentName string    `gorm:"column:DepartMentName;type:varchar(200)"`  // -- 部门名称--
+	Name           string    `gorm:"column:employee_name;type:varchar(50)"`    // 姓名--
+	IdentityNo     string    `gorm:"column:card_no;type:varchar(50)"`          // 人资编码 身份证号码格式的去除--
+	DepartMentName string    `gorm:"column:department_name;type:varchar(200)"` // -- 部门名称--
 	DeviceInout    int       `gorm:"column:Device_InOut;type:int"`             // 出入标识 1 入0 出--
 	DeviceLocation string    `gorm:"column:Device_Location;type:varchar(100)"` // 出入位置--
 	AuthTime       time.Time `gorm:"column:AuthTime;type:datetime"`            // 出入时间--
@@ -58,14 +57,14 @@ func MssqlService() *gorm.DB {
 		gormConfig.Logger = logger
 	}
 
-	dsn := "sqlserver://%s:%s@%s:%d?database=%s&encrypt=disable"
+	dsn := "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local&tls=preferred"
 	dsn = fmt.Sprintf(dsn, settings.DataBase.Username, settings.DataBase.Password, settings.DataBase.IP, settings.DataBase.Port, settings.DataBase.Database)
-	tdb, err := gorm.Open(sqlserver.Open(dsn), &gormConfig)
+	tdb, err := gorm.Open(mysql.Open(dsn), &gormConfig)
 
 	if err != nil {
-		fmt.Println("mssql 连接失败")
+		fmt.Println("mysql 连接失败")
 		fmt.Println(err.Error())
-		appLogger.Error("mssql 连接失败")
+		appLogger.Error("mysql 连接失败")
 		appLogger.Error(err.Error())
 		fmt.Println(err)
 		if *isTest {
@@ -75,9 +74,9 @@ func MssqlService() *gorm.DB {
 
 	// 检查数据库连接情况
 	rs := Record{}
-	err = tdb.Select("top 1 Record_ID").Find(&rs).Error
+	err = tdb.Select("employee_name").Table("aitcp_employee_t").Limit(1).Scan(&rs).Error
 	if err != nil {
-		fmt.Println("mssql 连接失败")
+		fmt.Println("mysql 连接失败")
 		fmt.Println(err.Error())
 		appLogger.Error("mssql 连接失败")
 		appLogger.Error(err.Error())

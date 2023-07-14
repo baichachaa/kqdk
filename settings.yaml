@@ -1,10 +1,10 @@
 Debug: true
 DataBase:
-    IP: 172.16.106.28
-    Port: 1433
-    Database: facecheck
-    Username: sa
-    Password: ad_12@23
+    IP: 127.0.0.1
+    Port: 6033
+    Database: xxkq
+    Username: root
+    Password: root
 Mqtt:
     Broker: 1.6.0.153
     Port: 11886
