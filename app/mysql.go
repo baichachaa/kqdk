@@ -13,7 +13,7 @@ import (
 )
 
 type Record struct {
-	RecordId       int       `gorm:"column:Record_ID;primaryKey"`              // 记录号
+	RecordId       string    `gorm:"column:-"`                                 // 记录号
 	Name           string    `gorm:"column:employee_name;type:varchar(50)"`    // 姓名--
 	IdentityNo     string    `gorm:"column:card_no;type:varchar(50)"`          // 人资编码 身份证号码格式的去除--
 	DepartMentName string    `gorm:"column:department_name;type:varchar(200)"` // -- 部门名称--

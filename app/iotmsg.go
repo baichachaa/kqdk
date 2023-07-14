@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"kqdk/utils"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -77,8 +78,14 @@ func getInData(isIn bool) {
 // inOrOut in:1 out:0
 // index: 进入或者出去的索引位置，两个索引位置不同
 // start,end: 00:00:00 时间段的起止
-func getDataModel(inOrOut int, index int, start string, end string) []Record {
+func getDataModel(inOrOut int, index string, start string, end string) []Record {
 	rs := []Record{}
+
+	inOrOutStr := "入口"
+	if inOrOut == 0 {
+		inOrOutStr = "出口"
+	}
+
 	appMysql.Table("aitcp_snapshot_t AS shot").
 		Select(`
 		shot.device_name,
@@ -88,9 +95,18 @@ func getDataModel(inOrOut int, index int, start string, end string) []Record {
 		emp.card_no`).
 		Joins("LEFT JOIN aitcp_employee_t AS emp ON shot.matched_person_id = emp.employee_code").
 		Where("shot.matched_person_id IS NOT NULL").
+		Where("emp.department_name IS NOT NULL").
 		Where("LENGTH( card_no ) = 8 ").
-		Where("shot.snap_time BETWEEN '2023-07-10 00:00:00' AND '2023-07-11 00:00:00'").
+		Where("shot.snap_time >= ?", index).
+		Where("LEFT( shot.device_name,2 ) = ?", inOrOutStr).
+		Where("time( shot.snap_time ) between ? and ?", start, end).
+		Order("shot.snap_time desc").
 		Scan(&rs)
+
+	for k := range rs {
+		rs[k].RecordId = rs[k].AuthTime.Format("2006-01-02 15:04:05")
+	}
+
 	return rs
 }
 
@@ -108,8 +124,9 @@ func getIotMessage(inOrOutData []Record) []byte {
 		iotData[k].EventTime = eventTime
 		iotData[k].ServiceId = settings.Devices.ServiceId
 
+		// 2：出方向，1：入方向
 		// 出入替换 0->2 1->1
-		if inOrOutData[k].DeviceInout == "0" {
+		if strings.Contains(inOrOutData[k].DeviceInout, "出口") == true {
 			iotData[k].Data.Type = "2"
 		} else {
 			iotData[k].Data.Type = "1"

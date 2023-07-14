@@ -24,13 +24,13 @@ type settingsStruct struct {
 		Qos      uint8  `yaml:"Qos"`
 	} `yaml:"Mqtt"`
 	In struct {
-		Index int    `yaml:"Index"`
+		Index string `yaml:"Index"`
 		Start string `yaml:"Start"`
 		End   string `yaml:"End"`
 		Cron  string `yaml:"Cron"`
 	} `yaml:"In"`
 	Out struct {
-		Index int    `yaml:"Index"`
+		Index string `yaml:"Index"`
 		Start string `yaml:"Start"`
 		End   string `yaml:"End"`
 		Cron  string `yaml:"Cron"`
