@@ -15,7 +15,6 @@ import (
 type Record struct {
 	RecordId       int       `gorm:"column:Record_ID;primaryKey"`              // 记录号
 	Name           string    `gorm:"column:name;type:varchar(50)"`             // 姓名--
-	Sex            string    `gorm:"column:Sex;type:varchar(10)"`              // 性别--
 	IdentityNo     string    `gorm:"column:IdentityNo;type:varchar(50)"`       // 人资编码 身份证号码格式的去除--
 	DepartMentName string    `gorm:"column:DepartMentName;type:varchar(200)"`  // -- 部门名称--
 	DeviceInout    int       `gorm:"column:Device_InOut;type:int"`             // 出入标识 1 入0 出--
