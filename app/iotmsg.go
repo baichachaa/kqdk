@@ -24,21 +24,19 @@ func getInData(isIn bool) {
 		}
 	}()
 
-	directionStr := "入"
-	direction := 1             // in
+	directionStr := "入"        // in
 	index := settings.In.Index // in
 	start := settings.In.Start // in
 	end := settings.In.End     // in
 
 	if isIn == false {
 		directionStr = "出"
-		direction = 0              // out
 		index = settings.Out.Index // out
 		start = settings.Out.Start // out
 		end = settings.Out.End     // out
 	}
 
-	dbList := getDataModel(direction, index, start, end)
+	dbList := getDataModel(isIn, index, start, end)
 
 	appLogger.Info(fmt.Sprintf("方向：%s，时间段：%s-%s，起始索引：%d，数量：%d", directionStr, start, end, index, len(dbList)))
 
@@ -77,8 +75,14 @@ func getInData(isIn bool) {
 // inOrOut in:1 out:0
 // index: 进入或者出去的索引位置，两个索引位置不同
 // start,end: 00:00:00 时间段的起止
-func getDataModel(inOrOut int, index int, start string, end string) []Record {
+func getDataModel(isIn bool, index int, start string, end string) []Record {
 	rs := []Record{}
+
+	inOrOutStr := 1
+	if isIn == false {
+		inOrOutStr = 0
+	}
+
 	//sqlite
 	//appSqlite.
 	//	Where("LENGTH(IdentityNo)=8").
@@ -91,7 +95,7 @@ func getDataModel(inOrOut int, index int, start string, end string) []Record {
 	appMssql.
 		Where("DATALENGTH(IdentityNo)=8").
 		Where("Record_ID > ?", index).
-		Where("Device_InOut = ?", inOrOut).
+		Where("Device_InOut = ?", inOrOutStr).
 		Where("CONVERT(char(8), AuthTime, 108) BETWEEN ? and ?", start, end).
 		Order("Record_ID DESC").Find(&rs)
 	return rs
@@ -111,6 +115,7 @@ func getIotMessage(inOrOutData []Record) []byte {
 		iotData[k].EventTime = eventTime
 		iotData[k].ServiceId = settings.Devices.ServiceId
 
+		// 2：出方向，1：入方向
 		// 出入替换 0->2 1->1
 		if inOrOutData[k].DeviceInout == 0 {
 			iotData[k].Data.Type = "2"
