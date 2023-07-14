@@ -25,21 +25,19 @@ func getInData(isIn bool) {
 		}
 	}()
 
-	directionStr := "入"
-	direction := 1             // in
+	directionStr := "入"        // in
 	index := settings.In.Index // in
 	start := settings.In.Start // in
 	end := settings.In.End     // in
 
 	if isIn == false {
 		directionStr = "出"
-		direction = 0              // out
 		index = settings.Out.Index // out
 		start = settings.Out.Start // out
 		end = settings.Out.End     // out
 	}
 
-	dbList := getDataModel(direction, index, start, end)
+	dbList := getDataModel(isIn, index, start, end)
 
 	appLogger.Info(fmt.Sprintf("方向：%s，时间段：%s-%s，起始索引：%d，数量：%d", directionStr, start, end, index, len(dbList)))
 
@@ -78,11 +76,11 @@ func getInData(isIn bool) {
 // inOrOut in:1 out:0
 // index: 进入或者出去的索引位置，两个索引位置不同
 // start,end: 00:00:00 时间段的起止
-func getDataModel(inOrOut int, index string, start string, end string) []Record {
+func getDataModel(isIn bool, index string, start string, end string) []Record {
 	rs := []Record{}
 
 	inOrOutStr := "入口"
-	if inOrOut == 0 {
+	if isIn == false {
 		inOrOutStr = "出口"
 	}
 
