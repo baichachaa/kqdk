@@ -7,14 +7,14 @@ import (
 )
 
 type settingsStruct struct {
-	Debug bool `yaml:"Debug"`
-	Mssql struct {
+	Debug    bool `yaml:"Debug"`
+	DataBase struct {
 		IP       string `yaml:"IP"`
 		Port     int    `yaml:"Port"`
 		Database string `yaml:"Database"`
 		Username string `yaml:"Username"`
 		Password string `yaml:"Password"`
-	} `yaml:"Mssql"`
+	} `yaml:"DataBase"`
 	Mqtt struct {
 		Broker   string `yaml:"Broker"`
 		Port     int    `yaml:"Port"`

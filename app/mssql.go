@@ -59,7 +59,7 @@ func MssqlService() *gorm.DB {
 	}
 
 	dsn := "sqlserver://%s:%s@%s:%d?database=%s&encrypt=disable"
-	dsn = fmt.Sprintf(dsn, settings.Mssql.Username, settings.Mssql.Password, settings.Mssql.IP, settings.Mssql.Port, settings.Mssql.Database)
+	dsn = fmt.Sprintf(dsn, settings.DataBase.Username, settings.DataBase.Password, settings.DataBase.IP, settings.DataBase.Port, settings.DataBase.Database)
 	tdb, err := gorm.Open(sqlserver.Open(dsn), &gormConfig)
 
 	if err != nil {

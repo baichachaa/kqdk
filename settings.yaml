@@ -1,5 +1,5 @@
 Debug: true
-Mssql:
+DataBase:
     IP: 172.16.106.28
     Port: 1433
     Database: facecheck
